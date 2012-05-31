@@ -1,12 +1,12 @@
 {
-      "name": "mediator",
+      "name": "reaper",
       "description" : "manages serializers/deserializers for API content-types/media-types",
       "keywords" : ["api", "rest", "http", "representation", 
                     "media-type", "media", "content", "content-type", 
                     "negotiation", "conneg"], 
       "version": "0.1.0",
       "bugs": {
-       "url": "https://github.com/cainus/mediator/issues"
+       "url": "https://github.com/cainus/reaper/issues"
       },
       "scripts" : {
         "test" : "make test"
@@ -28,7 +28,7 @@
           "mocha" : "0.14.1",
           "should" : "0.6.0"
       },
-      "repository" : "git@github.com:cainus/mediator.git",
-      "main" : "./mediator",
+      "repository" : "git@github.com:cainus/reaper.git",
+      "main" : "./reaper",
       "license": "MIT"
 }
