@@ -19,8 +19,7 @@
         } 
       ],
       "dependencies": {
-          "underscore" : "",
-          "negotiator" : "0.2.3"
+          "underscore" : ""
       },
       "devDependencies" : {
           "watch" : "0.5.1", 

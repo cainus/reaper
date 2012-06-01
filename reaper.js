@@ -1,6 +1,5 @@
 var _ = require('underscore');
-var Negotiator = require('negotiator');
-
+var preferredMediaTypes = require('./mediaType').preferredMediaTypes;
 
 var Reaper = function(){
   this._handlers = {}
@@ -45,7 +44,7 @@ Reaper.prototype.out = function(header, obj){
 exports.Reaper = Reaper;
 
 var headerToType = function(reaper, header){
-  var fakeRequest = { headers : { accept : header }};
-  var n = new Negotiator(fakeRequest);
-  return n.preferredMediaType(_.keys(reaper._handlers));
+  var supported = _.keys(reaper._handlers);
+  var preferred = preferredMediaTypes(header, supported);
+  return preferred[0];
 }

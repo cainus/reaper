@@ -65,6 +65,20 @@ describe('Reaper', function(){
       obj.type.should.equal("application/json");
       obj.content.should.equal('{"hello":"world"}');
     });
+    it ('takes a wild card accept header and matches an otherwise non-match', function(){
+      function jsonIn(str){
+        return JSON.parse(str);
+      }
+      function jsonOut(obj){
+        return JSON.stringify(obj);
+      }
+      var m = new Reaper();
+      m.register('application/json', jsonIn, jsonOut);
+      var nojson = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
+      var obj = m.out(nojson, {"hello" : "world"});
+      obj.type.should.equal("application/json");
+      obj.content.should.equal('{"hello":"world"}');
+    });
   });
 
 
