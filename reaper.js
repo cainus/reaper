@@ -27,7 +27,7 @@ Reaper.prototype.isRegistered = function(type){
   return _.has(this._handlers, type);
 };
 
-Reaper.prototype.in = function(type, str){
+Reaper.prototype.input = function(type, str){
   var handlers = this._handlers[type];
   if (!handlers){
     throw "Unregistered content-type.";
@@ -35,16 +35,18 @@ Reaper.prototype.in = function(type, str){
   return handlers._inF(str);
 };
 
-Reaper.prototype.out = function(header, obj){
+Reaper.prototype.output = function(header, obj){
+  header = header || '*/*';
   var type = headerToType(this, header);
 
   var handlers = this._handlers[type];
   if (!handlers){
-    throw "Unregistered content-type.";
+    throw "Unregistered content-type. OUT " + header;
   }
   return {type: type, content : handlers._outF(obj)};
   
 };
+
 
 exports.Reaper = Reaper;
 

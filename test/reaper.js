@@ -55,7 +55,7 @@ describe('Reaper', function(){
     });
   });
 
-  describe('#in', function(){
+  describe('#input', function(){
     it ('takes a content type and body and runs them through the in-handler to get a return value', function(){
       var m = new Reaper();
       function jsonIn(str){
@@ -65,11 +65,11 @@ describe('Reaper', function(){
         return JSON.stringify(obj);
       }
       m.register('application/json', jsonIn, jsonOut);
-      var obj = m.in("application/json", '{"hello" : "world"}');
+      var obj = m.input("application/json", '{"hello" : "world"}');
       obj.hello.should.equal("world");
     });
   });
-  describe('#out', function(){
+  describe('#output', function(){
     it ('takes an accept header and data hash and runs them through the out-handler to get a return type and value', function(){
       var m = new Reaper();
       function jsonIn(str){
@@ -79,7 +79,20 @@ describe('Reaper', function(){
         return JSON.stringify(obj);
       }
       m.register('application/json', jsonIn, jsonOut);
-      var obj = m.out("application/json, text/javascript, */*; q=0.01", {"hello" : "world"});
+      var obj = m.output("application/json, text/javascript, */*; q=0.01", {"hello" : "world"});
+      obj.type.should.equal("application/json");
+      obj.content.should.equal('{"hello":"world"}');
+    });
+    it ('takes a null accept header and matches an otherwise non-match', function(){
+      function jsonIn(str){
+        return JSON.parse(str);
+      }
+      function jsonOut(obj){
+        return JSON.stringify(obj);
+      }
+      var m = new Reaper();
+      m.register('application/json', jsonIn, jsonOut);
+      var obj = m.output(null, {"hello" : "world"});
       obj.type.should.equal("application/json");
       obj.content.should.equal('{"hello":"world"}');
     });
@@ -93,7 +106,7 @@ describe('Reaper', function(){
       var m = new Reaper();
       m.register('application/json', jsonIn, jsonOut);
       var nojson = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-      var obj = m.out(nojson, {"hello" : "world"});
+      var obj = m.output(nojson, {"hello" : "world"});
       obj.type.should.equal("application/json");
       obj.content.should.equal('{"hello":"world"}');
     });
