@@ -11,7 +11,7 @@ function parseAccept(accept) {
   }).filter(function(e) {
     return e && e.q > 0;
   });
-};
+}
 
 function parseMediaType(s) {
   var match = s.match(/\s*(\S+)\/([^;\s]+)\s*(?:;(.*))?/);
@@ -28,7 +28,7 @@ function parseMediaType(s) {
       return s.trim().split('=');
     }).reduce(function (set, p) {
       set[p[0]] = p[1];
-      return set
+      return set;
     }, params);
 
     if (params.q != null) {

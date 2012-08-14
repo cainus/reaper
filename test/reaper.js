@@ -9,32 +9,50 @@ describe('Reaper', function(){
       var m = new Reaper();
       m.register('application/json',
                  function(){return "IN";},
-                 function(){return "OUT"})
+                 function(){return "OUT";});
       _.keys(m._handlers)[0].should.equal('application/json');
       m._handlers['application/json']._inF().should.equal("IN");
       m._handlers['application/json']._outF().should.equal("OUT");
-    })
+    });
+  });
+
+  describe('#isAcceptable', function(){
+    beforeEach(function(){
+      this.m = new Reaper();
+      this.m.register('application/json',
+                       function(){return "IN";},
+                       function(){return "OUT";});
+    });
+    it ("returns true for */* scenarios", function(){
+      this.m.isAcceptable('text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8').should.equal(true);
+    });
+    it ("returns false for unacceptable scenarios", function(){
+      this.m.isAcceptable('text/html,application/xhtml+xml,application/xml').should.equal(false);
+    });
+    it ("returns true for precise acceptable scenarios", function(){
+      this.m.isAcceptable('text/html,application/xhtml+xml,application/json').should.equal(true);
+    });
   });
 
   describe('#isRegistered', function(){
     it ("checks for a content type in the registry and returns false if it's not there", function(){
       var m = new Reaper();
-      m.isRegistered('application/json').should.equal(false)
-    })
+      m.isRegistered('application/json').should.equal(false);
+    });
     it ("checks for a content type in the registry and returns true if it's there", function(){
       var m = new Reaper();
-      m.register('application/json', function(){}, function(){})
-      m.isRegistered('application/json').should.equal(true)
-    })
+      m.register('application/json', function(){}, function(){});
+      m.isRegistered('application/json').should.equal(true);
+    });
   });
 
   describe('#setDefault', function(){
     it ('sets the default content type to use when none is explicitly specified', function(){
       var m = new Reaper();
-      m.register('application/json', function(){}, function(){})
+      m.register('application/json', function(){}, function(){});
       m.setDefault('application/json');
       m._default.should.equal('application/json');
-    })
+    });
   });
 
   describe('#in', function(){
