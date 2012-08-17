@@ -90,6 +90,28 @@ describe('Reaper', function(){
         done();
       });
     });
+    it ('detects unsupported content-type', function(done){
+      var m = new Reaper();
+      m.register('application/json',
+                 function(){return "IN";},
+                 function(){return "OUT";});
+      var req = { 
+        method : "PUT",
+        on : function(type, cb){
+                if (type === 'end'){
+                  cb();
+                }
+              }};
+      req.headers = {
+        'accept' : 'application/json',
+        'content-type' : 'application/wthever'
+      };
+      var res = {};
+      m.connectMiddleware()(req, res, function(err){
+        err.should.equal('Unregistered content-type.');
+        done();
+      });
+    });
     it ('detects a parse error when there is one', function(done){
       var m = new Reaper();
       m.register('application/json',

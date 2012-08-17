@@ -69,9 +69,12 @@ Reaper.prototype.connectMiddleware = function(){
       }
       try {
         req.body = reaper.input(contentType, body);
-        next();
+        return next();
       } catch(ex) {
-        next("Parse Error: " + ex.toString());
+        if (ex === "Unregistered content-type."){
+          return next(ex);
+        }
+        return next("Parse Error: " + ex.toString());
       }
     });
   };

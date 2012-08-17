@@ -4,7 +4,7 @@
       "keywords" : ["api", "rest", "http", "representation", 
                     "media-type", "media", "content", "content-type", 
                     "negotiation", "conneg"], 
-      "version": "0.2.0",
+      "version": "0.2.1",
       "bugs": {
        "url": "https://github.com/cainus/reaper/issues"
       },
