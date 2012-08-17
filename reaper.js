@@ -18,8 +18,14 @@ Reaper.prototype.setDefault = function(type){
 };
 
 Reaper.prototype.isAcceptable = function(header){
+  // checks Accept header
   header = header || '*/*';
   var type = headerToType(this, header);
+  return !!type;
+};
+
+Reaper.prototype.isSupported = function(contentType){
+  var type = headerToType(this, contentType);
   return !!type;
 };
 
@@ -28,10 +34,11 @@ Reaper.prototype.isRegistered = function(type){
 };
 
 Reaper.prototype.input = function(type, str){
-  var handlers = this._handlers[type];
-  if (!handlers){
+  type = simplifyContentType(type);
+  if (!this.isSupported(type)){
     throw "Unregistered content-type.";
   }
+  var handlers = this._handlers[type];
   return handlers._inF(str);
 };
 
@@ -86,4 +93,8 @@ var headerToType = function(reaper, header){
   var supported = _.keys(reaper._handlers);
   var preferred = preferredMediaTypes(header, supported);
   return preferred[0];
+};
+
+var simplifyContentType = function(contentType){
+  return contentType.split(';')[0];
 };

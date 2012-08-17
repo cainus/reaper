@@ -112,6 +112,56 @@ describe('Reaper', function(){
         done();
       });
     });
+    it ('allows a fuzzy match content-type ', function(done){
+      var m = new Reaper();
+      m.register('application/json',
+                 function(){return "IN";},
+                 function(){return "OUT";});
+      var req = { 
+        method : "PUT",
+        on : function(type, cb){
+                if (type === 'end'){
+                  cb();
+                }
+              },
+        body : ''
+      };
+      req.headers = {
+        'accept' : 'application/json',
+        'content-type' : 'application/json; charset=UTF-8'
+      };
+      var res = {};
+      m.connectMiddleware()(req, res, function(err){
+        should.not.exist(err);
+        req.body.should.equal("IN");
+        done();
+      });
+    });
+    it ('allows an exact match content-type ', function(done){
+      var m = new Reaper();
+      m.register('application/json',
+                 function(){return "IN";},
+                 function(){return "OUT";});
+      var req = { 
+        method : "PUT",
+        on : function(type, cb){
+                if (type === 'end'){
+                  cb();
+                }
+              },
+        body : ''
+      };
+      req.headers = {
+        'accept' : 'application/json',
+        'content-type' : 'application/json'
+      };
+      var res = {};
+      m.connectMiddleware()(req, res, function(err){
+        should.not.exist(err);
+        req.body.should.equal("IN");
+        done();
+      });
+    });
     it ('detects a parse error when there is one', function(done){
       var m = new Reaper();
       m.register('application/json',
