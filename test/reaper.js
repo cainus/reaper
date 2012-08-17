@@ -4,6 +4,119 @@ var Reaper = require('../reaper').Reaper;
 
 describe('Reaper', function(){
 
+  describe('#connectMiddleware', function(){
+    it ('detects unacceptable Accept headers', function(done){
+      var m = new Reaper();
+      m.register('application/json',
+                 function(){return "IN";},
+                 function(){return "OUT";});
+      var req = { on : function(){}};
+      req.headers = {'accept' : 'application/xml'};
+      var res = {};
+      m.connectMiddleware()(req, res, function(err){
+        err.should.equal("Not Acceptable");
+        done();
+      });
+    });
+    it ('early exits when method is DELETE', function(done){
+      var m = new Reaper();
+      m.register('application/json',
+                 function(){return "IN";},
+                 function(){return "OUT";});
+      var req = { on : function(type, cb){
+                          should.not.exist(type);
+                       },
+                  headers : {},
+                  method : 'DELETE'};
+      var res = {};
+      m.connectMiddleware()(req, res, function(err){
+        should.not.exist(err);
+        done();
+      });
+    });
+    it ('early exits when method is GET', function(done){
+      var m = new Reaper();
+      m.register('application/json',
+                 function(){return "IN";},
+                 function(){return "OUT";});
+      var req = { on : function(type, cb){
+                          should.not.exist(type);
+                       },
+                  headers : {},
+                  method : 'GET'};
+      var res = {};
+      m.connectMiddleware()(req, res, function(err){
+        should.not.exist(err);
+        done();
+      });
+    });
+    it ('allows acceptable Accept headers', function(done){
+      var m = new Reaper();
+      m.register('application/json',
+                 function(){return "IN";},
+                 function(){return "OUT";});
+      var req = { 
+        method : "GET",
+        on : function(type, cb){
+                if (type === 'end'){
+                  cb();
+                }
+              }};
+      req.headers = {'accept' : 'application/json'};
+      var res = {};
+      m.connectMiddleware()(req, res, function(err){
+        should.not.exist(err);
+        done();
+      });
+    });
+    it ('detects missing content-type', function(done){
+      var m = new Reaper();
+      m.register('application/json',
+                 function(){return "IN";},
+                 function(){return "OUT";});
+      var req = { 
+        method : "PUT",
+        on : function(type, cb){
+                if (type === 'end'){
+                  cb();
+                }
+              }};
+      req.headers = {
+        'accept' : 'application/json'//,
+      };
+      var res = {};
+      m.connectMiddleware()(req, res, function(err){
+        err.should.equal('Missing Content-Type');
+        done();
+      });
+    });
+    it ('detects a parse error when there is one', function(done){
+      var m = new Reaper();
+      m.register('application/json',
+                 function(){throw "fake parse error";},
+                 function(){return "OUT";});
+      var req = { 
+        method : "PUT",
+        on : function(type, cb){
+                if (type === 'end'){
+                  cb();
+                }
+              },
+        body : ''
+      };
+      req.headers = {
+        'accept' : 'application/json',
+        'content-type' : 'application/json'
+      };
+      var res = {};
+      m.connectMiddleware()(req, res, function(err){
+        err.should.match(/^Parse Error: /);
+        done();
+      });
+    });
+  });
+
+
   describe('#register', function(){
     it ('adds a content type and handler to the registry', function(){
       var m = new Reaper();

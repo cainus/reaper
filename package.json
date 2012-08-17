@@ -4,7 +4,7 @@
       "keywords" : ["api", "rest", "http", "representation", 
                     "media-type", "media", "content", "content-type", 
                     "negotiation", "conneg"], 
-      "version": "0.1.3",
+      "version": "0.2.0",
       "bugs": {
        "url": "https://github.com/cainus/reaper/issues"
       },
@@ -24,8 +24,8 @@
       "devDependencies" : {
           "watch" : "0.5.1", 
           "hottap" : "1.0.0",
-          "mocha" : "0.14.1",
-          "should" : "0.6.0"
+          "mocha" : "1.3.2",
+          "should" : "1.1.0"
       },
       "repository" : "git@github.com:cainus/reaper.git",
       "main" : "./reaper",

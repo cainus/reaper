@@ -47,6 +47,35 @@ Reaper.prototype.output = function(header, obj){
   
 };
 
+Reaper.prototype.connectMiddleware = function(){
+  var reaper = this;
+
+  return function(req, res, next){
+    var accept = req.headers.accept || '*/*';
+    var body = '';
+    if (!reaper.isAcceptable(accept)){
+      return next("Not Acceptable");
+    }
+    if (_.include(['GET', 'DELETE'], req.method)){
+      return next();
+    }
+    req.on('data', function(data){
+      body += data;
+    });
+    req.on('end', function(){
+      var contentType = req.headers['content-type'];
+      if (!contentType){
+        return next("Missing Content-Type");
+      }
+      try {
+        req.body = reaper.input(contentType, body);
+        next();
+      } catch(ex) {
+        next("Parse Error: " + ex.toString());
+      }
+    });
+  };
+};
 
 exports.Reaper = Reaper;
 
