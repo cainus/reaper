@@ -159,7 +159,6 @@ describe('Reaper', function(){
       var passed = {};
       m.connectMiddleware(passed)(req, res, function(err){
         should.not.exist(err);
-        //should.not.exist(req.body);
         passed.body.should.equal("IN");
         passed.rawBody.should.equal("");
         done();
