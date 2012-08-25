@@ -137,6 +137,34 @@ describe('Reaper', function(){
         done();
       });
     });
+    it ('can put the body on a passed object instead of req', function(done){
+      var m = new Reaper();
+      m.register('application/json',
+                 function(){return "IN";},
+                 function(){return "OUT";});
+      var req = { 
+        method : "PUT",
+        on : function(type, cb){
+                if (type === 'end'){
+                  cb();
+                }
+              },
+        body : ''
+      };
+      req.headers = {
+        'accept' : 'application/json',
+        'content-type' : 'application/json'
+      };
+      var res = {};
+      var passed = {};
+      m.connectMiddleware(passed)(req, res, function(err){
+        should.not.exist(err);
+        //should.not.exist(req.body);
+        passed.body.should.equal("IN");
+        passed.rawBody.should.equal("");
+        done();
+      });
+    });
     it ('allows an exact match content-type ', function(done){
       var m = new Reaper();
       m.register('application/json',

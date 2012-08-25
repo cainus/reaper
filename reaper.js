@@ -54,10 +54,11 @@ Reaper.prototype.output = function(header, obj){
   
 };
 
-Reaper.prototype.connectMiddleware = function(){
+Reaper.prototype.connectMiddleware = function(patchMe){
   var reaper = this;
 
   return function(req, res, next){
+    if (!patchMe){patchMe = req;}
     var accept = req.headers.accept || '*/*';
     var body = '';
     if (!reaper.isAcceptable(accept)){
@@ -74,8 +75,9 @@ Reaper.prototype.connectMiddleware = function(){
       if (!contentType){
         return next("Missing Content-Type");
       }
+      patchMe.rawBody = body;
       try {
-        req.body = reaper.input(contentType, body);
+        patchMe.body = reaper.input(contentType, body);
         return next();
       } catch(ex) {
         if (ex === "Unregistered content-type."){
