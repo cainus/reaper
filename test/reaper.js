@@ -1,6 +1,6 @@
 var should = require('should');
 var _ = require('underscore');
-var Reaper = require('../reaper').Reaper;
+var Reaper = require('../index');
 
 describe('Reaper', function(){
 

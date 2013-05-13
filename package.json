@@ -1,33 +1,43 @@
 {
-      "name": "reaper",
-      "description" : "manages serializers/deserializers for API content-types/media-types",
-      "keywords" : ["api", "rest", "http", "representation", 
-                    "media-type", "media", "content", "content-type", 
-                    "negotiation", "conneg"], 
-      "version": "0.2.3",
-      "bugs": {
-       "url": "https://github.com/cainus/reaper/issues"
-      },
-      "scripts" : {
-        "test" : "make test"
-      },
-      "maintainers": [
-        {
-          "name": "Gregg Caines",
-          "email": "gregg@caines.ca",
-          "web": "http://caines.ca"
-        } 
-      ],
-      "dependencies": {
-          "underscore" : ""
-      },
-      "devDependencies" : {
-          "watch" : "0.5.1", 
-          "hottap" : "1.0.0",
-          "mocha" : "1.3.2",
-          "should" : "1.1.0"
-      },
-      "repository" : "git@github.com:cainus/reaper.git",
-      "main" : "./reaper",
-      "license": "MIT"
+  "name": "reaper",
+  "description": "manages serializers/deserializers for API content-types/media-types",
+  "keywords": [
+    "api",
+    "rest",
+    "http",
+    "representation",
+    "media-type",
+    "media",
+    "content",
+    "content-type",
+    "negotiation",
+    "conneg"
+  ],
+  "version": "0.3.0",
+  "bugs": {
+    "url": "https://github.com/cainus/reaper/issues"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "maintainers": [
+    {
+      "name": "Gregg Caines",
+      "email": "gregg@caines.ca",
+      "web": "http://caines.ca"
+    }
+  ],
+  "dependencies": {
+    "underscore": ""
+  },
+  "devDependencies": {
+    "jscoverage": "0.3.7",
+    "watch": "0.5.1",
+    "hottap": "1.0.0",
+    "mocha": "1.3.2",
+    "should": "1.1.0"
+  },
+  "repository": "git@github.com:cainus/reaper.git",
+  "main": "./reaper",
+  "license": "MIT"
 }
