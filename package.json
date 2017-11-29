@@ -28,8 +28,8 @@
     }
   ],
   "dependencies": {
-    "underscore": "",
-    "negotiator": "0.2.5"
+    "negotiator": "^0.6.1",
+    "underscore": ""
   },
   "devDependencies": {
     "mocha-lcov-reporter": "0.0.1",
